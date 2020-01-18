@@ -1,9 +1,3 @@
-/*
-// Author: Justin Sadakhom
-// Date: June 11, 2019
-// File: Game.java
-*/
-
 package snake.evolution;
 
 import java.util.ArrayList;
@@ -18,7 +12,7 @@ import static javafx.scene.input.KeyCode.*;
 
 /*
 // From NEAT package.
-// IMPORTANT: Credit for NEAT code goes to "hydrozoa".
+// IMPORTANT: Credit for NEAT algorithm code goes to "hydrozoa".
 // Code retrieved from https://github.com/hydrozoa-yt/hydroneat
 */
 import neat.ConnectionGene;
@@ -32,49 +26,32 @@ import neat.NodeGene;
 import neat.NodeGene.TYPE;
 
 /*
-// This class loads initial components of "Snake".
+// Class loads initial components of "Snake".
 // It also invokes methods from the Manager class
 // to update game components, when necessary.
 */
 public class Game {
-
-    /* FIELDS */
     
-    // No. of squares on side of grid.
     static final int GRID_LENGTH = 8;
-    
-    // No. of squares in entire grid.
     static final int GRID_AREA = (int)Math.pow(GRID_LENGTH, 2);
     
     // Dimensions of program window.
     private final int WIDTH = (GRID_LENGTH * Entity.SIDE_LENGTH) - 1; // looks weird in debug mode without -1
     private final int HEIGHT = GRID_LENGTH * Entity.SIDE_LENGTH;
     
-    // Whether game is paused.
+    // Game rules.
     private boolean paused = false;
-    
-    // Whether game is being played by a human.
     private boolean humanPlayer = false; // true to play manually
-    
-    // No. of the snake in the generation.
     private int snakeCount = 0;
-    
-    // Factor that game speed is increased by.
     private int speedMult = 2; // can change; default 1
-    
-    // Delay, in milliseconds, before Snake moves.
     private int MOVE_DELAY = 132 / speedMult;
     
     // Game components.
     private Node[] grid;
     private Snake player;
     private Node apple;
-    
-    // Application objects.
     private Scene scene;
     private Group group;
-    
-    // Timers.
     private AnimationTimer moveTimer; // animation delay
     private AnimationTimer starveTimer; // starvation delay
     
@@ -84,41 +61,35 @@ public class Game {
     private float[] input = new float[6];
     private float[] output = new float[3];
     
-    // Objects used to generate random values.
     private Random r = new Random();
-    
-    /* CONSTRUCTORS */
     
     // Default constructor.
     public Game() {
         
         Robot robot = new Robot();
         
-        // Creates game components.
         loadGenetics();
         loadGrid();
         loadSnake();
         loadApple();
         
-        // Adds game components to group.
         group = new Group(grid);
         group.getChildren().addAll(player.body());
         group.getChildren().add(apple);
         
-        // Initializes scene.
         scene = new Scene(group, WIDTH, HEIGHT);
         
-        // Activates feature based on which key was pressed.
+        // Activate feature based on which key was pressed.
         scene.setOnKeyPressed((KeyEvent event) -> {
             
             switch(event.getCode()) {
                 
-                // If "R", reset game.
+                // Reset game.
                 case R:
                     reset();
                     break;
                 
-                // If "P", pause game.
+                // Pause game.
                 case P:
                     paused = !paused;
                     timersOn(!paused);
@@ -128,35 +99,33 @@ public class Game {
                     break;
             }
             
-            // Gets input for Snake movement.
             Manager.getInput(event, player);
         });
         
-        // Clock given delay of MOVE_DELAY milliseconds.
         moveTimer = new Clock(MOVE_DELAY) {
             
             @Override
             public void handle() {
                 
                 /*
-                // Invokes move() method, moving the snake.
-                // If move() returns false, game resets.
+                // Invoke move() method, moving the snake.
+                // If move() returns false, reset game.
                 */
                 if (!Manager.move(player, (Apple)apple, grid))
                     reset();
                 
-                // Otherwise, game proceeds as normal.
+                // Proceed game as normal.
                 else {
                     
                     if (!humanPlayer) {
                         
-                        // Generates input[] array.
+                        // Generate input[] array.
                         input = Manager.processInput(grid, player, (Apple)apple);
 
-                        // Generates output[] array using input[].
+                        // Generate output[] array using input[].
                         output = net.calculate(input);
 
-                        // Switch case that analyzes index of largest value in output[].
+                        // Analyze index of largest value in output[].
                         switch(Genetics.largest(output)) {
 
                             /*
@@ -197,10 +166,9 @@ public class Game {
                         player.resetScore();
                         player.grow();
                         
-                        // Updates game grid.
+                        // Update game grid.
                         grid = Manager.updateGrid(grid, player, (Apple)apple);
 
-                        // If Snake isn't max length...
                         if (player.size() != GRID_AREA) {
 
                             // Updates previous and current position of apple.
@@ -212,7 +180,7 @@ public class Game {
                             group.getChildren().addAll(player.body());
                         }
 
-                        // Otheriwise, Snake reaches max length...
+                        // Otherwise, Snake reaches max length...
                         else {
                             
                             // Apple is removed from game as there's no space to spawn it.
@@ -227,7 +195,7 @@ public class Game {
                     }
                 }
                 
-                // Updates grid with new occupied Tiles.
+                // Update grid with new occupied Tiles.
                 grid = Manager.updateGrid(grid, player, (Apple)apple);
                 
                 // Lock no longer active as all processing has finished.
@@ -235,29 +203,26 @@ public class Game {
             }
         };
         
-        // Clock given delay of 5280 / multiplier milliseconds.
         starveTimer = new Clock(5280 / speedMult) {
             
             @Override
             public void handle() {
                 
-                // If Snake hasn't eaten, game resets.
+                // If Snake hasn't eaten, reset game.
                 if (!player.wellFed())
                     reset();
                 
-                // Sets Snake to hungry.
+                // Set Snake to hungry.
                 player.setWellFed(false);
             }
         };
         
-        // Starts timer after initialization.
+        // Start timer after initialization.
         timersOn(true);
         paused = false;
     }
     
-    /* METHODS */
-    
-    // Creates the game grid.
+    // Create the game grid.
     private void loadGrid() {
         
         grid = new Tile[GRID_AREA];
@@ -271,13 +236,10 @@ public class Game {
                 grid[i * Game.GRID_LENGTH + j] = new Tile(new Coordinate(i, j));
     }
     
-    // Spawns the Snake.
+    // Spawn the Snake.
     private void loadSnake() {
         
-        // Initializes player.
         player = Genetics.generation.get(0);
-        
-        // Initializes neural network.
         net = new NeuralNetwork(player.genome());
         
         // Sets the tiles the player is on to occupied.
@@ -289,20 +251,17 @@ public class Game {
         System.out.print("#" + snakeCount);
     }
     
-    // Spawns the Apple.
+    // Spawn the Apple.
     private void loadApple() {
         
-        // Initializes apple, with random coordinate as parameter.
         apple = new Apple(getAppleSpawn());
-        
-        // Sets the tile the apple is on to occupied.
         ((Tile)grid[((Apple)apple).getPos().toTile()]).setOccupied(true);
     }
     
     /*
     // @author hydrozoa
     //
-    // Loads the genetics components required to
+    // Load the genetics components required to
     // use NEAT algorithm and neural network.
     //
     // Besides tweaks and my comments, code for
@@ -347,7 +306,7 @@ public class Game {
             return g;
         };
         
-        // Generates NEAT algorithm that uses GEN_SIZE
+        // Generate NEAT algorithm that uses GEN_SIZE
         // as the number of Snakes in each generation.
         NEATConfiguration conf = new NEATConfiguration(Genetics.GEN_SIZE);
         
@@ -358,22 +317,22 @@ public class Game {
             @Override
             public float evaluateGenome(Genome g) {
                 
-                // Returns g.fitness as its evaluation of fitness.
+                // Return g.fitness as its evaluation of fitness.
                 return g.fitness;
             }
         };
         
-        // Initializes arrayList used to store Snakes.
+        // Initialize arrayList used to store Snakes.
         Genetics.generation = new ArrayList<>();
         
-        // Adds Snake with corresponding genome to the arrayList.
+        // Add Snake with corresponding genome to the arrayList.
         for (int i = 0; i < Genetics.GEN_SIZE; i++)
             Genetics.generation.add(new Snake(evaluator.genomes.get(i)));
     }
     
     /*
-    // Generates a random Coordinate for an
-    // Apple object. Always ensures that the
+    // Generate a random Coordinate for an
+    // Apple object. Always ensure that the
     // Coordinate is on a non-occupied Tile.
     //
     // @return Coordinate of next Apple.
@@ -399,30 +358,30 @@ public class Game {
         return new Coordinate(randomTile.x(), randomTile.y());
     }
     
-    // Resets the game to prepare for a new Snake.
+    // Reset the game to prepare for a new Snake.
     private void reset() {
         
-        // Transfers current score of Snake into health.
+        // Transfer current score of Snake into health.
         player.addHealth(player.score());
         
-        // Calculates final fitness of Snake.
+        // Calculate final fitness of Snake.
         player.calcFitness();
         System.out.print(" Fitness: " + player.fitness() + "\n");
         
-        // Turns timers off.
+        // Turn timers off.
         timersOn(false);
         
-        // Loads new grid.
+        // Load new grid.
         loadGrid();
         
-        // Removes game components.
+        // Remove game components.
         group.getChildren().removeAll(player.body());
         group.getChildren().remove(apple);
         
-        // Adds current Snake to "dead" arrayList.
+        // Add current Snake to "dead" arrayList.
         Genetics.dead.add(Genetics.generation.get(0));
         
-        // Removes current Snake from "generation" arrayList.
+        // Remove current Snake from "generation" arrayList.
         Genetics.generation.remove(0);
         
         // If the current generation has all died...
@@ -430,38 +389,35 @@ public class Game {
             
             snakeCount = 0;
             
-            // Sorts dead Snakes using Insertion sort.
+            // Sort dead Snakes using Insertion sort.
             Genetics.dead = Genetics.sort(Genetics.dead);
             
-            // Evaluates generation, scoring each with a fitness
+            // Evaluate generation, scoring each with a fitness
             // and generating a new genome based on the most fit
             // Snakes.
             evaluator.evaluateGeneration(r);
             
-            // Adds a Snake with their corresponding genome.
+            // Add a Snake with their corresponding genome.
             for (int i = 0; i < Genetics.GEN_SIZE; i++)
                 Genetics.generation.add(new Snake(evaluator.genomes.get(i)));
             
-            // Clears dead Snake arrayList, using recursion.
+            // Clear dead Snake arrayList, using recursion.
             Genetics.dead = Genetics.clean(Genetics.dead);
         }
         
-        // Spawns game components.
         loadSnake();
         loadApple();
         
-        // Adds game components back to program.
         group.getChildren().addAll(player.body());
         group.getChildren().add(apple);
         
-        // Timers turn back on again.
         timersOn(true);
     }
     
     /*
-    // Turns timers on / off.
+    // Turn timers on / off.
     //
-    // @param on - State timers will be set to.
+    // @param on: state timers will be set to
     */
     private void timersOn(boolean on) {
         

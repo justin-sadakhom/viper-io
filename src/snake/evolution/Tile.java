@@ -1,25 +1,14 @@
-/*
-// Author: Justin Sadakhom
-// Date: June 11, 2019
-// File: Tile.java
-*/
-
 package snake.evolution;
 
 import javafx.scene.paint.Color;
 
 /*
-// Represents a square which makes up the
-// game grid. Is a subclass of Entity.
+// Square which makes up the game grid.
 */
 public class Tile extends Entity {
     
-    /* FIELDS */
-    
     // Whether the Tile has a Creature on it.
     public boolean occupied;
-    
-    /* CONSTRUCTOR */
     
     // Default constructor.
     public Tile(Coordinate position) {
@@ -47,8 +36,6 @@ public class Tile extends Entity {
         // TURN ON FOR DEBUG MODE.
         //this.setStroke(Color.BLACK);
     }
-    
-    /* METHODS */
     
     // Setter method for occupied.
     public void setOccupied(Boolean state) {
