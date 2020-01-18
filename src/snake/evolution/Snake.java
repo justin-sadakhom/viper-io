@@ -1,9 +1,3 @@
-/*
-// Author: Justin Sadakhom
-// Date: June 11, 2019
-// File: Snake.java
-*/
-
 package snake.evolution;
 
 import java.util.ArrayList;
@@ -11,12 +5,9 @@ import javafx.scene.input.KeyEvent;
 import neat.Genome;
 
 /*
-// Representation of a Snake, the playable
-// character of the game "Snake".
+// Playable character of the game "Snake".
 */
 public class Snake {
-    
-    /* FIELDS */
     
     // Length constants.
     private final int MIN_SIZE = 2;
@@ -47,8 +38,6 @@ public class Snake {
     // If Snake has eaten recently.
     private boolean wellFed = true;
     
-    /* CONSTRUCTORS */
-    
     /*
     // Default constructor.
     //
@@ -67,8 +56,6 @@ public class Snake {
         // Places next segment in proper orientation.
         loadBody();
     }
-    
-    /* FIELDS */
     
     /*
     // Using direction of Snake, places its next
@@ -111,7 +98,7 @@ public class Snake {
     }
     
     /*
-    // Grows Snake. Method should only be invoked
+    // Grow Snake. Method should only be invoked
     // after the Snake eats an Apple.
     */
     public void grow() {
@@ -126,9 +113,9 @@ public class Snake {
     }
     
     /*
-    // Checks if Snake's head is on an Apple.
+    // Check if Snake's head is on an Apple.
     //
-    // @param apple - Apple object that is being checked.
+    // @param apple: Apple object that is being checked
     //
     // @return true if first segment of Snake has same
     // Coordinate as Apple, false otherwise.
@@ -139,7 +126,7 @@ public class Snake {
     }
     
     /*
-    // Changes direction of Snake based on
+    // Change direction of Snake based on
     // input from keystroke.
     //
     // @param event - Keystroke.
@@ -177,10 +164,10 @@ public class Snake {
     }
     
     /*
-    // Finds next Coordinate based on orientation
+    // Find next Coordinate based on orientation
     // and position of Snake head.
     //
-    // @param orientation - Direction from Snake
+    // @param orientation: direction from Snake
     // head that's being checked
     // 
     // @return Coordinate of Tile at the direction
@@ -241,11 +228,11 @@ public class Snake {
     }
     
     /*
-    // Checks if there's an Apple in a certain
+    // Check if there's an Apple in a certain
     // direction from the head.
     //
-    // @param apple - Apple being checked for
-    // @param orientation - Direction of check
+    // @param apple: Apple being checked for
+    // @param orientation: Direction of check
     //
     // @return true is Apple is in that direction,
     // false otherwise
@@ -307,10 +294,10 @@ public class Snake {
     }
     
     /*
-    // Calculates angle from Snake head
+    // Calculate angle from Snake head
     // to Apple.
     //
-    // @param apple - Apple being referenced.
+    // @param apple: Apple being referenced
     //
     // @return - Calculated angle.
     */
