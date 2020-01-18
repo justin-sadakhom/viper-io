@@ -1,23 +1,40 @@
+/*
+// Author: Justin Sadakhom
+// Date: June 11, 2019
+// File: Creature.java
+*/
+
 package snake.evolution;
 
 /*
 // Abstract class that represents beings that
-// move on the game grid.
+// move on the game grid. Subclass of Entity.
 */
 public abstract class Creature extends Entity {
+
+    /* FIELDS */
     
     // Position before last update.
     private Coordinate lastPos;
     
+    /* CONSTRUCTOR */
+    
+    /*
+    // Default constructor.
+    // Takes Coordinate as parameter.
+    */
+    
     /*
     // Default constructor.
     //
-    // @param pos: position of Creature on grid
+    // @param pos - Position of Creature on grid.
     */
     public Creature(Coordinate pos) {
         
         super(pos);
     }
+    
+    /* METHODS */
     
     // Getter for x-coordinate.
     @Override

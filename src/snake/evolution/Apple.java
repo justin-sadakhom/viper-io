@@ -1,16 +1,25 @@
+/*
+// Author: Justin Sadakhom
+// Date: June 11, 2019
+// File: Apple.java
+*/
+
 package snake.evolution;
 
 import javafx.scene.paint.Color;
 
 /*
 // Representation of the food that a snake eats.
+// Is a subclass of Creature.
 */
 public class Apple extends Creature {
+    
+    /* CONSTRUCTOR */
     
     /*
     // Default constructor.
     //
-    // @param pos: position on grid
+    // @param pos - Position of Apple on grid.
     */
     public Apple(Coordinate pos) {
         
@@ -19,6 +28,8 @@ public class Apple extends Creature {
         // Sets fill colour to deep red.
         this.setFill(Color.rgb(170, 51, 51));
     }
+    
+    /* METHODS */
     
     // Getter for x-coordinate.
     @Override

@@ -1,15 +1,26 @@
+/*
+// Author: Justin Sadakhom
+// Date: June 11, 2019
+// File: Manager.java
+*/
+
 package snake.evolution;
 
 import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
 
 /*
-// Controls any changes made to the game.
+// This class controls any changes made to
+// the game.
 */
 public class Manager {
     
+    /* FIELDS */
+    
     // Whether new key inputs are processed.
     private static boolean keyLock = false;
+    
+    /* METHODS */
     
     /*
     // Invokes Snake's changePath() method if
@@ -31,34 +42,40 @@ public class Manager {
     }
     
     /*
-    // Update the game grid when changes occur
+    // Updates the game grid when changes occur to its tiles.
+    // Changes include the snake moving in and out of tiles
+    // and an apple spawning in a new position.
+    */
+    
+    /*
+    // Updates the game grid when changes occur
     // to its tiles.
     //
-    // @param grid: grid being processed
-    // @param player: Snake playing on the grid
-    // @param apple: Apple on the grid
+    // @param grid - Grid being processed.
+    // @param player - Snake playing on the grid.
+    // @param apple - Apple on the grid.
     //
     // @return Grid with up-to-date info on Tiles
     // and which ones are occupied.
     */
     public static Node[] updateGrid(Node[] grid, Snake player, Apple apple) {
         
-        // Store copies of elements in grid.
+        // Stores copies of elements in grid.
         Node[] gridClone = new Node[Game.GRID_AREA];
         
-        // Iterate through all tiles, adding each tile to gridClone.
+        // Iterates through all tiles, adding each tile to gridClone.
         for (int i = 0; i < Game.GRID_AREA; i++)
             gridClone[i] = grid[i];
         
-        // Set every tile that snake's body is on to "occupied".
+        // Sets every tile that snake's body is on to "occupied".
         for (int i = 0; i < player.size(); i++)
             ((Tile)gridClone[player.segment(i).getPos().toTile()]).setOccupied(true);
 
-        // Set last tile of LAST segment to "not occupied".
+        // Sets last tile of LAST segment to "not occupied".
         if (player.segment(player.size() - 1).lastPos() != null) // null if lastPos doesn't yet exist
             ((Tile)gridClone[player.segment(player.size() - 1).lastPos().toTile()]).setOccupied(false);
         
-        // Set tile of apple to "occupied".
+        // Sets tile of apple to "occupied".
         ((Tile)gridClone[apple.getPos().toTile()]).setOccupied(true);
         
         if (apple.lastPos() != null) { // null if lastPos doesn't yet exist
@@ -66,7 +83,7 @@ public class Manager {
             // Snake body isn't initially on apple.
             boolean onApple = false;
             
-            // Iterate through each segment in snake body...
+            // Iterates through each segment in snake body...
             for (int i = 0; i < player.size(); i++)
                 
                 // If segment and apple's last position are the same...
@@ -85,7 +102,7 @@ public class Manager {
         
         Node[] newGrid = new Node[Game.GRID_AREA];
         
-        // Iterate through all tiles in gridClone, adding back each tile to newGrid.
+        // Iterates through all tiles in gridClone, adding back each tile to newGrid.
         for (int i = 0; i < Game.GRID_AREA; i++)
             newGrid[i] = gridClone[i];
         
@@ -93,11 +110,11 @@ public class Manager {
     }
     
     /*
-    // Move Snake's body to a new position.
+    // Moves Snake's body to a new position.
     //
-    // @param grid: game grid
-    // @param snake: character that is moving
-    // @param apple: Food object
+    // @param grid - Game grid.
+    // @param snake - Character that is moving.
+    // @param apple - Food object.
     //
     // @return true if movement is successful, false if Snake
     // collides with an obstacle.
@@ -107,7 +124,7 @@ public class Manager {
         // Reference to first segment.
         Segment head = snake.segment(0);
         
-        // Set last position of head to current position.
+        // Sets last position of head to current position.
         head.setLastPos(head.getPos());
         
         /*
@@ -129,7 +146,7 @@ public class Manager {
         // Otherwise, no obstruction.
         else {
             
-            // Move head forward.
+            // Head moves forward.
             head.setPos(snake.next("Forward"));
             
             /*
@@ -149,12 +166,12 @@ public class Manager {
     }
     
     /*
-    // Create input[] array for use in processing
+    // Creates input[] array for use in processing
     // by neural network.
     //
-    // @param grid: grid being processed
-    // @param player: Snake playing on the grid
-    // @param apple: Apple on the grid
+    // @param grid - Grid being processed.
+    // @param player - Snake playing on the grid.
+    // @param apple - Apple on the grid.
     */
     public static float[] processInput(Node[] grid, Snake player, Apple apple) {
         

@@ -1,3 +1,9 @@
+/*
+// Author: Justin Sadakhom
+// Date: June 11, 2019
+// File: GameRunner.java
+*/
+
 package snake.evolution;
 
 import javafx.application.Application;

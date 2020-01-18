@@ -1,19 +1,30 @@
+/*
+// Author: Justin Sadakhom
+// Date: June 11, 2019
+// File: Coordinate.java
+*/
+
 package snake.evolution;
 
 /*
-// Point on a Cartesian coordinate system,
+// Represents a point on a coordinate system,
 // where values go from 0 to GRID_LENGTH;
 */
 public class Coordinate {
+
+    /* FIELDS */
     
+    // x-coordinate and y-coordinate.
     private int xPos;
     private int yPos;
+    
+    /* CONSTRUCTOR */
     
     /*
     // Default constructor.
     //
-    // @param xPos: x value of position on grid
-    // @param yPos: y value of position on grid
+    // @param xPos - x value of position on grid.
+    // @param yPos - y value of position on grid.
     */
     public Coordinate(int xPos, int yPos) {
         
@@ -36,12 +47,13 @@ public class Coordinate {
     /* METHODS */
     
     /*
-    // Checks if two Coordinates have the same values.
+    // Checks if two Coordinates have the same
+    // values.
     //
-    // @param other: Coordinate being compared to
+    // @param other - Coordinate being compared to.
     //
-    // @return true if this has same values as other,
-    // false otherwise.
+    // @return true if this has same values as
+    // other, false otherwise.
     */
     public boolean equals(Coordinate other) {
         
@@ -49,11 +61,11 @@ public class Coordinate {
     }
     
     /*
-    // Compares Coordinate to <other> to determine
-    // which is closer to <reference>.
+    // Compares Coordinates to determine which is
+    // closer to a reference point.
     //
-    // @param other: Coordinate being compared to
-    // @param reference: Coordinate used to check distance from
+    // @param other - Coordinate being compare to.
+    // @param reference - Coordinate used to check distance from.
     //
     // @return true if this is closer to reference than other,
     // false otherwise.

@@ -1,36 +1,50 @@
+/*
+// Author: Justin Sadakhom
+// Date: June 11, 2019
+// File: Entity.java
+*/
+
 package snake.evolution;
 
 import javafx.scene.shape.Rectangle;
 
 /*
-// An object that can occupy space on the game grid.
+// Abstract class that represents any object that
+// can occupy space on the game grid. Subclass of
+// Java FX's Rectangle.
 */
 public abstract class Entity extends Rectangle {
+
+    /* CONSTANTS */
     
     // Length of one square, in pixels.
     final static int SIDE_LENGTH = 40;
     
+    /* FIELDS */
+    
     // Current position.
     private Coordinate pos;
+    
+    /* CONSTRUCTOR */
     
     /*
     // Default constructor.
     //
-    // @param pos: position on grid
+    // @param pos - Position of Entity on grid.
     */
     public Entity(Coordinate pos) {
         
         super();
         
         this.pos = pos;
-
+        
         loadShape();
     }
     
     /*
     // Copies a template Entity.
     //
-    // @param template: Entity that constructor copies fields from
+    // @param template - Entity that constructor copies fields from.
     */
     public Entity(Entity template) {
         
@@ -40,6 +54,8 @@ public abstract class Entity extends Rectangle {
         
         loadShape();
     }
+    
+    /* METHODS */
     
     // Getter for x-coordinate.
     public int x() {

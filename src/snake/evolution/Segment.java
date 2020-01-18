@@ -1,27 +1,38 @@
+/*
+// Author: Justin Sadakhom
+// Date: June 11, 2019
+// File: Segment.java
+*/
+
 package snake.evolution;
 
 import javafx.scene.paint.Color;
 
 /*
-// Unit that makes up a Snake.
+// Representation of a unit that makes up
+// a Snake. Subclass of Creature.
 */
 public class Segment extends Creature {
+    
+    /* CONSTRUCTORS */
     
     /*
     // Default constructor.
     //
-    // @param pos: Position of Segment on grid.
+    // @param pos - Position of Segment on grid.
     */
     public Segment(Coordinate pos) {
         
         super(pos);
         
-        // Set fill colour to black.
+        // Sets fill colour to black.
         setFill(Color.rgb(55, 55, 55));
     }
     
+    /* METHODS */
+    
     /*
-    // Check if Segment is outside the grid.
+    // Checks if Segment is outside the grid.
     //
     // @return true if either x-coordinate or y-coordinate isn't
     // between 0 to GRID_LENGTH - 1, false otherwise.

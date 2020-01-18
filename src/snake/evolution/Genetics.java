@@ -1,3 +1,9 @@
+/*
+// Author: Justin Sadakhom
+// Date: June 11, 2019
+// File: Genetics.java
+*/
+
 package snake.evolution;
 
 import java.util.ArrayList;
@@ -22,9 +28,9 @@ public class Genetics {
     public static ArrayList<Snake> dead = new ArrayList<>();
 
     /*
-    // Insertion sort algorithm.
+    // Insertion sort.
     //
-    // @param gen: unsorted ArrayList of Snakes
+    // @param gen - Unsorted ArrayList of Snakes.
     //
     // @return Sorted ArrayList of Snakes.
     */
@@ -48,9 +54,9 @@ public class Genetics {
     }
     
     /*
-    // Find the index of largest element in an array.
+    // Finds the index of largest element in an array.
     //
-    // @param input[]: array that is being searched
+    // @param input[] - Array that is being searched.
     //
     // @return Index of largest element. -1 if error.
     */
@@ -58,14 +64,14 @@ public class Genetics {
         
         float largest = 0;
         
-        // Iterate through each element.
+        // Iterates through each element.
         // If element is larger than "largest",
-        // Set largest to that element.
+        // Sets largest to that element.
         for (int i = 0; i < input.length; i++)
             if (Float.compare(input[i], largest) > 0)
                 largest = input[i];
         
-        // Iterate through each element to
+        // Iterates through each element to
         // find index of element that matches
         // largest.
         for (int i = 0; i < input.length; i++)
@@ -76,21 +82,21 @@ public class Genetics {
     }
     
     /*
-    // Use recursion to empty a list of elements.
+    // Uses recursion to empty a list of elements.
     //
-    // @param list: ArrayList being emptied
+    // @param list - ArrayList being emptied.
     //
-    // @return Cleaned ArrayList.
+    // @return - Cleaned ArrayList.
     */
     public static ArrayList<Snake> clean(ArrayList<Snake> list) {
         
         // If list still has elements...
         if (!list.isEmpty()) {
             
-            // Remove element at first index.
+            // Removes element at first index.
             list.remove(0);
             
-            // Recursively iterate through ArrayList until empty.
+            // Recursively iterates through ArrayList until empty.
             Genetics.clean(list);
         }
         
